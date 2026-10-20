@@ -1,0 +1,19 @@
+`400.perlbench-41B`, with 250 million warmup instructions and 250 million simulated instructions.
+
+
+## Results: LRU vs. DRRIP
+
+| Metric                   | Run 2: LRU   | Run 3: DRRIP |
+| ------------------------ | ------------ | ------------ |
+| IPC                      | 1.393        | 1.421        |
+| LLC accesses             | 146,418      | 146,420      |
+| LLC misses               | 97,436       | 77,735       |
+| LLC miss rate            | 66.55%       | 53.09%       |
+| LLC MPKI                 | 0.390        | 0.311        |
+| Average LLC miss latency | 176.5 cycles | 162.4 cycles |
+
+
+
+- IPC improved by about 2.0% with DRRIP.
+- LLC misses decreased by about 20.2%.
+- LLC MPKI decreased from approximately 0.390 to 0.311.

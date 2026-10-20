@@ -1,0 +1,6 @@
+Category	Trace
+baseline	400.perlbench-41B.champsimtrace.xz
+SPEC CPU 2017	602.gcc_s-1850B.champsimtrace.xz
+Graph / Ligra	ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz
+AI / ML	llama2.c-llama2_7b.1.champsimtrace.gz
+Google	tango_0000.champsim.gz
