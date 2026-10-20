@@ -61,6 +61,31 @@ long do_cycle(environment& env, std::vector<tracereader>& traces, std::vector<st
   return progress;
 }
 
+namespace
+{
+void print_llc_mpki_interval(const std::string& phase_name, const std::string& workload, CACHE& llc, O3_CPU& cpu, uint64_t& previous_instructions,
+                             uint64_t& previous_misses, uint64_t& interval_number)
+{
+  const auto instructions = static_cast<uint64_t>(cpu.sim_instr());
+  if (instructions <= previous_instructions)
+    return;
+
+  const auto& misses = llc.sim_stats.misses;
+  const auto current_misses = static_cast<uint64_t>(misses.value_or(std::pair{access_type::LOAD, cpu.cpu}, 0)
+                                                    + misses.value_or(std::pair{access_type::RFO, cpu.cpu}, 0));
+  const auto instruction_delta = instructions - previous_instructions;
+  const auto miss_delta = current_misses - previous_misses;
+
+  ++interval_number;
+  fmt::print("[LLC_MPKI] phase={} workload={} cache=LLC cpu={} interval={} retired={} instructions={} load_rfo_misses={} mpki={:.6f}\n", phase_name,
+             workload, cpu.cpu, interval_number, instructions, instruction_delta, miss_delta,
+             1000.0 * static_cast<double>(miss_delta) / static_cast<double>(instruction_delta));
+
+  previous_instructions = instructions;
+  previous_misses = current_misses;
+}
+} // namespace
+
 phase_stats do_phase(const phase_info& phase, environment& env, std::vector<tracereader>& traces, champsim::chrono::clock& global_clock)
 {
   auto operables = env.operable_view();
@@ -82,6 +107,18 @@ phase_stats do_phase(const phase_info& phase, environment& env, std::vector<trac
   std::vector<double> livelock_threshold{0.01, 0.02, 0.05};
   std::vector<uint64_t> livelock_instr(std::size(env.cpu_view()), 0);
 
+  constexpr uint64_t mpki_interval_instructions = 10000000;
+  auto cpus = env.cpu_view();
+  auto caches = env.cache_view();
+  CACHE* llc = nullptr;
+  for (auto& cache_ref : caches) {
+    if (cache_ref.get().NAME == "LLC")
+      llc = &cache_ref.get();
+  }
+  std::vector<uint64_t> mpki_last_instr(std::size(cpus), 0);
+  std::vector<uint64_t> mpki_last_misses(std::size(cpus), 0);
+  std::vector<uint64_t> mpki_interval_index(std::size(cpus), 0);
+
   // Perform phase
   int stalled_cycle{0};
   std::vector<bool> phase_complete(std::size(env.cpu_view()), false);
@@ -90,6 +127,12 @@ phase_stats do_phase(const phase_info& phase, environment& env, std::vector<trac
     global_clock.tick(time_quantum);
 
     auto progress = do_cycle(env, traces, trace_index, global_clock);
+
+    for (O3_CPU& cpu : cpus) {
+      if (static_cast<uint64_t>(cpu.sim_instr()) - mpki_last_instr[cpu.cpu] >= mpki_interval_instructions)
+        print_llc_mpki_interval(phase_name, trace_names.at(trace_index.at(cpu.cpu)), *llc, cpu, mpki_last_instr[cpu.cpu],
+                                mpki_last_misses[cpu.cpu], mpki_interval_index[cpu.cpu]);
+    }
 
     if (progress == 0) {
       ++stalled_cycle;
@@ -153,6 +196,8 @@ phase_stats do_phase(const phase_info& phase, environment& env, std::vector<trac
   }
 
   for (O3_CPU& cpu : env.cpu_view()) {
+    print_llc_mpki_interval(phase_name, trace_names.at(trace_index.at(cpu.cpu)), *llc, cpu, mpki_last_instr[cpu.cpu], mpki_last_misses[cpu.cpu],
+                            mpki_interval_index[cpu.cpu]); // Emit the final partial interval, if any.
     fmt::print("{} complete CPU {} instructions: {} cycles: {} cumulative IPC: {:.4g} (Simulation time: {:%H hr %M min %S sec})\n", phase_name, cpu.cpu,
                cpu.sim_instr(), cpu.sim_cycle(), std::ceil(cpu.sim_instr()) / std::ceil(cpu.sim_cycle()), elapsed_time());
   }

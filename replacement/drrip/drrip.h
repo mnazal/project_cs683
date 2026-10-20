@@ -3,6 +3,7 @@
 
 #include <array>
 #include <vector>
+#include <cstdint>
 
 #include "cache.h"
 #include "modules.h"
@@ -16,6 +17,9 @@ public:
   static constexpr unsigned maxRRPV = 3;
   static constexpr unsigned BRRIP_MAX = 32;
   static constexpr unsigned PSEL_WIDTH = 10;
+  static constexpr std::uint64_t PSEL_LOG_INTERVAL = 1000000; // to enable logging in every interval
+  std::uint64_t psel_log_fill_count = 0;
+  std::uint64_t psel_log_sample = 0;
 
   enum class set_type { follower, brrip_leader, srrip_leader };
 

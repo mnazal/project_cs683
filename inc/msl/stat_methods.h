@@ -52,7 +52,7 @@ private:
 
 public:
   std::size_t get_sample_rate() const { return cat_sampler.get_sample_rate(); }
-
+  auto value() const { return counter.value(); } // return the current value of the counter
   bool decide(const T& candidate)
   {
     auto category = cat_sampler.get_sample_category(candidate);
