@@ -70,10 +70,7 @@ void drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long way, 
   psel_log_fill_count++;
   if (psel_log_fill_count % PSEL_LOG_INTERVAL == 0) {
     psel_log_sample++;
-    std::cout << "[DRRIP-PSEL] cache=" << intern_->NAME << " cpu=0"
-          << " sample=" << psel_log_sample
-          << " eligible_fills=" << psel_log_fill_count
-          << " value=" << PSEL[0].value() << '\n';
+    std::cout << "[DRRIP-PSEL] cache=" << intern_->NAME  << " PSEL value=" << PSEL[0].value() << '\n';
   }
 }
 
