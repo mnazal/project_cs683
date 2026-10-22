@@ -59,7 +59,13 @@ void drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long way, 
     update_srrip(set, way);
   }
   // cache miss, update bad
+  const auto psel_before = PSEL[triggering_cpu].value();
   PSEL[triggering_cpu].update_bad(set);
+  const auto psel_after = PSEL[triggering_cpu].value();
+  constexpr long psel_threshold = 1L << (PSEL_WIDTH - 1);
+  if ((psel_before < psel_threshold && psel_after >= psel_threshold) || (psel_before >= psel_threshold && psel_after < psel_threshold)) {
+    std::cout << "[DRRIP-PSEL] cache=" << intern_->NAME << " next_follower_policy=" << (psel_after >= psel_threshold ? "BRRIP" : "SRRIP") << '\n';
+  }
 
   psel_log_fill_count++;
   if (psel_log_fill_count % PSEL_LOG_INTERVAL == 0) {

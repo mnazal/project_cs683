@@ -1,0 +1,97 @@
+[VMEM] WARNING: physical memory size is smaller than virtual memory size.
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+Warmup Instructions: 250000000
+Simulation Instructions: 250000000
+Number of CPUs: 1
+Page size: 4096
+
+Off-chip DRAM Size: 16 GiB Channels: 1 Width: 64-bit Data Rate: 3205 MT/s
+Heartbeat CPU 0 instructions: 10000003 cycles: 3825714 heartbeat IPC: 2.614 cumulative IPC: 2.614 (Simulation time: 00 hr 00 min 55 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=1 retired=10000003 instructions=10000003 load_rfo_misses=59547 mpki=5.954698
+Heartbeat CPU 0 instructions: 20000006 cycles: 7649123 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 01 min 47 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=2 retired=20000006 instructions=10000003 load_rfo_misses=59541 mpki=5.954098
+Heartbeat CPU 0 instructions: 30000007 cycles: 11472482 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 02 min 27 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=3 retired=30000007 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 40000011 cycles: 15296074 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 03 min 22 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=4 retired=40000011 instructions=10000004 load_rfo_misses=59540 mpki=5.953998
+Heartbeat CPU 0 instructions: 50000013 cycles: 19119332 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 04 min 17 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=5 retired=50000013 instructions=10000002 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 60000013 cycles: 22942739 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 05 min 13 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=6 retired=60000013 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 70000014 cycles: 26765938 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 05 min 49 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=7 retired=70000014 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 80000016 cycles: 30589444 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 06 min 13 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=8 retired=80000016 instructions=10000002 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 90000020 cycles: 34412743 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 06 min 40 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=9 retired=90000020 instructions=10000004 load_rfo_misses=59541 mpki=5.954098
+Heartbeat CPU 0 instructions: 100000023 cycles: 38236152 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 07 min 05 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=10 retired=100000023 instructions=10000003 load_rfo_misses=59540 mpki=5.953998
+Heartbeat CPU 0 instructions: 110000024 cycles: 42059556 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 07 min 30 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=11 retired=110000024 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 120000026 cycles: 45883065 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 08 min 08 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=12 retired=120000026 instructions=10000002 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 130000030 cycles: 49706361 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 08 min 47 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=13 retired=130000030 instructions=10000004 load_rfo_misses=59540 mpki=5.953998
+Heartbeat CPU 0 instructions: 140000030 cycles: 53529768 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 09 min 26 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=14 retired=140000030 instructions=10000000 load_rfo_misses=59542 mpki=5.954200
+Heartbeat CPU 0 instructions: 150000031 cycles: 57353172 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 10 min 07 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=15 retired=150000031 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 160000033 cycles: 61176641 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 10 min 48 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=16 retired=160000033 instructions=10000002 load_rfo_misses=59540 mpki=5.953999
+[DRRIP-PSEL] cache=LLC cpu=0 sample=1 eligible_fills=1000000 value=13
+Heartbeat CPU 0 instructions: 170000035 cycles: 64999817 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 11 min 21 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=17 retired=170000035 instructions=10000002 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 180000035 cycles: 68823224 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 11 min 48 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=18 retired=180000035 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 190000036 cycles: 72646583 heartbeat IPC: 2.616 cumulative IPC: 2.615 (Simulation time: 00 hr 12 min 33 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=19 retired=190000036 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 200000036 cycles: 76470027 heartbeat IPC: 2.615 cumulative IPC: 2.615 (Simulation time: 00 hr 13 min 41 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=20 retired=200000036 instructions=10000000 load_rfo_misses=59542 mpki=5.954200
+Heartbeat CPU 0 instructions: 210000038 cycles: 80316494 heartbeat IPC: 2.6 cumulative IPC: 2.615 (Simulation time: 00 hr 14 min 49 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=21 retired=210000038 instructions=10000002 load_rfo_misses=71882 mpki=7.188199
+Heartbeat CPU 0 instructions: 220000040 cycles: 85292714 heartbeat IPC: 2.01 cumulative IPC: 2.579 (Simulation time: 00 hr 16 min 33 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=22 retired=220000040 instructions=10000002 load_rfo_misses=714284 mpki=71.428386
+[DRRIP-PSEL] cache=LLC cpu=0 sample=2 eligible_fills=2000000 value=16
+Heartbeat CPU 0 instructions: 230000041 cycles: 90268945 heartbeat IPC: 2.01 cumulative IPC: 2.548 (Simulation time: 00 hr 18 min 49 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=23 retired=230000041 instructions=10000001 load_rfo_misses=714284 mpki=71.428393
+[DRRIP-PSEL] cache=LLC cpu=0 sample=3 eligible_fills=3000000 value=16
+Heartbeat CPU 0 instructions: 240000045 cycles: 95245358 heartbeat IPC: 2.009 cumulative IPC: 2.52 (Simulation time: 00 hr 20 min 06 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=24 retired=240000045 instructions=10000004 load_rfo_misses=714290 mpki=71.428971
+[DRRIP-PSEL] cache=LLC cpu=0 sample=4 eligible_fills=4000000 value=15
+*** Reached end of trace: (0, "/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz")
+Warmup finished CPU 0 instructions: 250000003 cycles: 100221567 cumulative IPC: 2.494 (Simulation time: 00 hr 21 min 04 sec)
+[LLC_MPKI] phase=Warmup workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=25 retired=250000003 instructions=9999958 load_rfo_misses=714280 mpki=71.428300
+Warmup complete CPU 0 instructions: 250000003 cycles: 100221567 cumulative IPC: 2.494 (Simulation time: 00 hr 21 min 04 sec)
+Heartbeat CPU 0 instructions: 250000045 cycles: 100222003 heartbeat IPC: 2.009 cumulative IPC: 0.09195 (Simulation time: 00 hr 21 min 04 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=1 retired=10000002 instructions=10000002 load_rfo_misses=59547 mpki=5.954699
+Heartbeat CPU 0 instructions: 260000047 cycles: 113129490 heartbeat IPC: 0.7747 cumulative IPC: 0.7747 (Simulation time: 00 hr 22 min 56 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=2 retired=20000002 instructions=10000000 load_rfo_misses=59541 mpki=5.954100
+Heartbeat CPU 0 instructions: 270000047 cycles: 126034682 heartbeat IPC: 0.7749 cumulative IPC: 0.7748 (Simulation time: 00 hr 24 min 56 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=3 retired=30000003 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 280000048 cycles: 138937547 heartbeat IPC: 0.775 cumulative IPC: 0.7749 (Simulation time: 00 hr 27 min 34 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=4 retired=40000003 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 290000048 cycles: 151851297 heartbeat IPC: 0.7744 cumulative IPC: 0.7747 (Simulation time: 00 hr 29 min 57 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=5 retired=50000004 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 300000049 cycles: 164743805 heartbeat IPC: 0.7756 cumulative IPC: 0.7749 (Simulation time: 00 hr 32 min 50 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=6 retired=60000004 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 310000049 cycles: 177641398 heartbeat IPC: 0.7753 cumulative IPC: 0.775 (Simulation time: 00 hr 34 min 00 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=7 retired=70000005 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 320000049 cycles: 190529038 heartbeat IPC: 0.7759 cumulative IPC: 0.7751 (Simulation time: 00 hr 35 min 13 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=8 retired=80000006 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 330000051 cycles: 203417266 heartbeat IPC: 0.7759 cumulative IPC: 0.7752 (Simulation time: 00 hr 36 min 28 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=9 retired=90000007 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 340000052 cycles: 216308666 heartbeat IPC: 0.7757 cumulative IPC: 0.7753 (Simulation time: 00 hr 37 min 42 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=10 retired=100000007 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 350000052 cycles: 229206946 heartbeat IPC: 0.7753 cumulative IPC: 0.7753 (Simulation time: 00 hr 39 min 04 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=11 retired=110000008 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 360000053 cycles: 242098224 heartbeat IPC: 0.7757 cumulative IPC: 0.7753 (Simulation time: 00 hr 41 min 17 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=12 retired=120000008 instructions=10000000 load_rfo_misses=59540 mpki=5.954000
+Heartbeat CPU 0 instructions: 370000053 cycles: 254997849 heartbeat IPC: 0.7752 cumulative IPC: 0.7753 (Simulation time: 00 hr 43 min 33 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=13 retired=130000009 instructions=10000001 load_rfo_misses=59540 mpki=5.953999
+Heartbeat CPU 0 instructions: 380000054 cycles: 267891642 heartbeat IPC: 0.7756 cumulative IPC: 0.7753 (Simulation time: 00 hr 46 min 36 sec)
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=14 retired=140000009 instructions=10000000 load_rfo_misses=59541 mpki=5.954100
+Heartbeat CPU 0 instructions: 390000054 cycles: 280799825 heartbeat IPC: 0.7747 cumulative IPC: 0.7753 (Simulation time: 00 hr 49 min 04 sec)
+[DRRIP-PSEL] cache=LLC cpu=0 sample=5 eligible_fills=5000000 value=11
+[LLC_MPKI] phase=Simulation workload=/home/nazal/traces/ligra_PageRankDelta.com-lj.ungraph.gcc_6.3.0_O3.drop_6000M.length_250M.champsimtrace.xz cache=LLC cpu=0 interval=15 retired=150000010 instructions=10000001 load_rfo_misses=59541 mpki=5.954099
+Heartbeat CPU 0 instructions: 400000055 cycles: 293701257 heartbeat IPC: 0.7751 cumulative IPC: 0.7753 (S
