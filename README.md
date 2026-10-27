@@ -54,7 +54,6 @@ If a clean environment needs additional dependencies, follow ChampSim's vcpkg se
 Replace the trace path and output filename with the ones for the run:
 
 ~~~bash
-mkdir -p "results/phase 1/instrumented"
 ./bin/champsim   --warmup-instructions 250000000   --simulation-instructions 250000000  "/path/to/trace.champsimtrace.xz" 
   
 ~~~
