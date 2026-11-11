@@ -1,0 +1,98 @@
+#include "mpki_drrip.h"
+
+#include <algorithm>
+#include <cassert>
+#include <fmt/core.h>
+#include <random>
+#include <utility>
+
+#include "champsim.h"
+
+drrip::drrip(CACHE* cache)
+    : replacement(cache), NUM_SET(cache->NUM_SET), NUM_WAY(cache->NUM_WAY), rrpv(static_cast<std::size_t>(NUM_SET * NUM_WAY)),
+      PSEL(NUM_CPUS, champsim::msl::dscounter<long, PSEL_WIDTH>(champsim::msl::get_sample_rate(NUM_SET)))
+{
+}
+
+unsigned& drrip::get_rrpv(long set, long way) { return rrpv.at(static_cast<std::size_t>(set * NUM_WAY + way)); }
+
+void drrip::update_brrip(long set, long way)
+{
+  get_rrpv(set, way) = maxRRPV;
+
+  brrip_counter++;
+  if (brrip_counter == BRRIP_MAX) {
+    brrip_counter = 0;
+    get_rrpv(set, way) = maxRRPV - 1;
+  }
+}
+
+void drrip::update_srrip(long set, long way) { get_rrpv(set, way) = maxRRPV - 1; }
+
+// called on every cache hit and cache fill
+void drrip::update_replacement_state(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip,
+                                     champsim::address victim_addr, access_type type, uint8_t hit)
+{
+
+  // cache hit
+  if (hit) {
+    // do not update replacement state for writebacks
+    if (access_type{type} == access_type::WRITE) {
+      get_rrpv(set, way) = maxRRPV - 1;
+      return;
+    }
+    get_rrpv(set, way) = 0; // for cache hit, DRRIP always promotes a cache line to the MRU position
+  }
+}
+
+void drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip,
+                                   champsim::address victim_addr, access_type type)
+{
+  constexpr long follower_set = 2;
+
+  // do not update replacement state for writebacks
+  if (access_type{type} == access_type::WRITE) {
+    get_rrpv(set, way) = maxRRPV - 1;
+    return;
+  }
+  if (PSEL[triggering_cpu].decide(set)) {
+    update_brrip(set, way);
+  } else {
+    update_srrip(set, way);
+  }
+  // cache miss, update bad
+  const auto previous_policy = PSEL.at(triggering_cpu).decide(follower_set);
+  const auto previous_psel = PSEL.at(triggering_cpu).value();
+  PSEL[triggering_cpu].update_bad(set);
+  const auto current_psel = PSEL.at(triggering_cpu).value();
+  const auto current_policy = PSEL.at(triggering_cpu).decide(follower_set);
+  auto& interval = champsim::current_intervals.at(triggering_cpu);
+  interval.psel_value = static_cast<std::uint64_t>(current_psel);
+  interval.policy_is_brrip = current_policy;
+  if (current_psel != previous_psel) {
+    ++interval.psel_changes;
+  }
+  if (current_policy != previous_policy) {
+    ++interval.policy_switches;
+    fmt::print("POLICY_SWITCH phase={} cpu={} interval={} instructions={} from={} to={} psel={}\n", interval.phase, triggering_cpu,
+               interval.number, interval.instructions, previous_policy ? "BRRIP" : "SRRIP", current_policy ? "BRRIP" : "SRRIP", current_psel);
+  }
+}
+
+// find replacement victim
+long drrip::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const champsim::cache_block* current_set, champsim::address ip,
+                        champsim::address full_addr, access_type type)
+{
+  // look for the maxRRPV line
+  auto begin = std::next(std::begin(rrpv), set * NUM_WAY);
+  auto end = std::next(begin, NUM_WAY);
+
+  auto victim = std::max_element(begin, end);
+  if (auto rrpv_update = maxRRPV - *victim; rrpv_update != 0)
+    for (auto it = begin; it != end; ++it)
+      *it += rrpv_update;
+
+  assert(begin <= victim);
+  assert(victim < end);
+  return std::distance(begin, victim); // cast protected by assertions
+}
