@@ -1,14 +1,15 @@
-#ifndef REPLACEMENT_DRRIP_H
-#define REPLACEMENT_DRRIP_H
+#ifndef REPLACEMENT_MPKI_DRRIP_H
+#define REPLACEMENT_MPKI_DRRIP_H
 
 #include <array>
 #include <vector>
+#include <cstdint>
 
 #include "cache.h"
 #include "modules.h"
 #include "msl/stat_methods.h"
 
-struct drrip : public champsim::modules::replacement {
+struct mpki_drrip : public champsim::modules::replacement {
 private:
   unsigned& get_rrpv(long set, long way);
 
@@ -26,7 +27,7 @@ public:
   std::vector<unsigned> rrpv;
   std::vector<champsim::msl::dscounter<long, PSEL_WIDTH>> PSEL;
 
-  drrip(CACHE* cache);
+  mpki_drrip(CACHE* cache);
 
   // void initialize_replacement()
   long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const champsim::cache_block* current_set, champsim::address ip,
@@ -37,10 +38,29 @@ public:
                                 access_type type, uint8_t hit);
 
   // use this function to print out your own stats at the end of simulation
-  // void replacement_final_stats() {}
+  void replacement_final_stats();
 
   void update_brrip(long set, long way);
   void update_srrip(long set, long way);
+
+
+  struct phase_t {
+  uint64_t last_instr = 0, misses = 0, epochs = 0, changes = 0;
+  double avg = -1.0;
+  int consec = 0, cooldown = 0;
+};
+std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
+
+static constexpr uint64_t EPOCH_INSTR     = 1'000'000;
+static constexpr double   REL_THRESH      = 0.5;
+static constexpr double   MIN_ABS_MPKI    = 1.0;
+static constexpr int      CONSEC_NEEDED   = 2;
+static constexpr int      COOLDOWN_EPOCHS = 3;
+static constexpr long     PSEL_STEP       = 0;   // 0 = hard reset
+
+void check_epoch(uint32_t cpu);
+void reset_psel(uint32_t cpu);
 };
 
 #endif
+    

@@ -83,6 +83,13 @@ public:
   }
   dscounter(std::size_t sample_rate_, CatProj cat_projection_) : cat_sampler(sample_rate_, cat_projection_), counter(0) {}
   dscounter(std::size_t sample_rate_) : dscounter(sample_rate_, CatProj{}) {}
+  void reset_to(long target, long steps = 0)
+  {
+    long n = 0;
+    while (counter < target && (steps == 0 || n < steps)) { counter += 1; ++n; }
+    while (counter > target && (steps == 0 || n < steps)) { counter -= 1; ++n; }
+  }
+  long mid() const { return counter.maximum / 2; }
 };
 
 // get_sample_rate determines the sampling rate for set dueling based on the number of sets in the cache. It returns a sample rate that is a power of 2, and is
