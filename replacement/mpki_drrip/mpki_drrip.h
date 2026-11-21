@@ -22,7 +22,7 @@ public:
 
   long NUM_SET, NUM_WAY;
 
-  unsigned brrip_counter;
+  unsigned brrip_counter=0;
 
   std::vector<unsigned> rrpv;
   std::vector<champsim::msl::dscounter<long, PSEL_WIDTH>> PSEL;
@@ -48,13 +48,14 @@ public:
   uint64_t last_instr = 0, misses = 0, epochs = 0, changes = 0;
   double avg = -1.0;
   int consec = 0, cooldown = 0;
+  std::vector<std::pair<uint64_t, double>> mpki_trace;
 };
 std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
 
-static constexpr uint64_t EPOCH_INSTR     = 1'000'000;
-static constexpr double   REL_THRESH      = 0.5;
+static constexpr uint64_t EPOCH_INSTR     = 250000;
+static constexpr double   REL_THRESH      = 0.25;
 static constexpr double   MIN_ABS_MPKI    = 1.0;
-static constexpr int      CONSEC_NEEDED   = 2;
+static constexpr int      CONSEC_NEEDED   = 1;
 static constexpr int      COOLDOWN_EPOCHS = 3;
 static constexpr long     PSEL_STEP       = 0;   // 0 = hard reset
 

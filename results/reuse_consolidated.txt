@@ -1,0 +1,8 @@
+results/reuse_drrip_605.mcf_s-1644B.champsimtrace.xz.txt
+CPU0 reuse signal: epochs=139 forced_brrip=138 forced_srrip=0 final R=0.962
+results/reuse_drrip_620.omnetpp_s-874B.champsimtrace.xz.txt
+CPU0 reuse signal: epochs=139 forced_brrip=104 forced_srrip=0 final R=0.772
+results/reuse_drrip_Trace1.gz.txt
+CPU0 reuse signal: epochs=137 forced_brrip=96 forced_srrip=0 final R=0.802
+results/reuse_drrip_Trace2.gz.txt
+CPU0 reuse signal: epochs=138 forced_brrip=108 forced_srrip=0 final R=0.911

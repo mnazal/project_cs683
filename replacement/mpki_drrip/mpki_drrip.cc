@@ -38,17 +38,20 @@ void mpki_drrip::check_epoch(uint32_t cpu)
 {
   auto& p = ph[cpu];
   uint64_t now = champsim::retired_instr[cpu];
+  if (now < p.last_instr) { p.last_instr = now; p.misses = 0; return; } // counter was reset
   uint64_t d = now - p.last_instr;
   if (d < EPOCH_INSTR)
     return;
 
   double mpki = 1000.0 * static_cast<double>(p.misses) / static_cast<double>(d);
+  p.mpki_trace.emplace_back(p.epochs + 1, mpki);
   if (p.avg < 0)
-    p.avg = mpki; // seed with the first epoch
+    p.avg = mpki;
 
   bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, REL_THRESH * p.avg);
   p.consec = changed ? p.consec + 1 : 0;
 
+  bool fired = false;
   if (p.cooldown > 0) {
     p.cooldown--;
   } else if (p.consec >= CONSEC_NEEDED) {
@@ -56,9 +59,14 @@ void mpki_drrip::check_epoch(uint32_t cpu)
     p.cooldown = COOLDOWN_EPOCHS;
     p.consec = 0;
     p.changes++;
+    fired = true;
   }
 
-  p.avg += 0.25 * (mpki - p.avg); // update AFTER comparing
+  if (fired)
+    p.avg = mpki;                          // new regime becomes the baseline
+  else if (!changed || p.cooldown > 0)
+    p.avg += 0.25 * (mpki - p.avg);        // don't let a pending change drag the baseline
+
   p.misses = 0;
   p.last_instr = now;
   p.epochs++;
