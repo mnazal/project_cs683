@@ -11,6 +11,7 @@
 #include <cstdio>
 #include "instruction_counter.h"
 #include <cstdint>
+#include <cstdlib>
 
 reuse_drrip::reuse_drrip(CACHE* cache)
     : replacement(cache), NUM_SET(cache->NUM_SET), NUM_WAY(cache->NUM_WAY), rrpv(static_cast<std::size_t>(NUM_SET * NUM_WAY)),
@@ -18,6 +19,8 @@ reuse_drrip::reuse_drrip(CACHE* cache)
       state(static_cast<std::size_t>(NUM_SET * NUM_WAY), 0),
       cat_sampler(champsim::msl::get_sample_rate(NUM_SET))
 {
+    if (const char* v = std::getenv("REUSE_HI")) hi_thresh = std::atof(v);
+if (const char* v = std::getenv("REUSE_LO")) lo_thresh = std::atof(v);
 }
 
 //ADDED FOR REUSE DRRIP
@@ -46,8 +49,10 @@ void reuse_drrip::check_epoch(uint32_t cpu)
   double r = static_cast<double>(p.dead) / static_cast<double>(p.evictions);
   p.avg_r = (p.avg_r < 0) ? r : p.avg_r + EMA_ALPHA * (r - p.avg_r);
 
-  if (p.avg_r > HI_THRESH)      { bias_psel(cpu, true);  p.forced_brrip++; }
-  else if (p.avg_r < LO_THRESH) { bias_psel(cpu, false); p.forced_srrip++; }
+//   if (p.avg_r > HI_THRESH)      { bias_psel(cpu, true);  p.forced_brrip++; }
+//   else if (p.avg_r < LO_THRESH) { bias_psel(cpu, false); p.forced_srrip++; }
+      if (p.avg_r > hi_thresh)      { bias_psel(cpu, true);  p.forced_brrip++; }
+  else if (p.avg_r < lo_thresh) { bias_psel(cpu, false); p.forced_srrip++; }
 
   p.evictions = p.dead = 0;
 }
@@ -139,6 +144,6 @@ void reuse_drrip::replacement_final_stats()
 {
   for (std::size_t c = 0; c < ph.size(); ++c)
     if (ph[c].epochs)
-      std::printf("CPU%zu reuse signal: epochs=%lu forced_brrip=%lu forced_srrip=%lu final R=%.3f\n",
-                  c, ph[c].epochs, ph[c].forced_brrip, ph[c].forced_srrip, ph[c].avg_r);
+      {std::printf("CPU%zu reuse signal: epochs=%lu forced_brrip=%lu forced_srrip=%lu final R=%.3f hi=%.2f lo=%.2f\n",
+            c, ph[c].epochs, ph[c].forced_brrip, ph[c].forced_srrip, ph[c].avg_r, hi_thresh, lo_thresh);}
 }

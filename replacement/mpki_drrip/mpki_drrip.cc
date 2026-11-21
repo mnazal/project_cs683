@@ -9,11 +9,16 @@
 #include "instruction_counter.h"
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 
 mpki_drrip::mpki_drrip(CACHE* cache)
     : replacement(cache), NUM_SET(cache->NUM_SET), NUM_WAY(cache->NUM_WAY), rrpv(static_cast<std::size_t>(NUM_SET * NUM_WAY)),
       PSEL(NUM_CPUS, champsim::msl::dscounter<long, PSEL_WIDTH>(champsim::msl::get_sample_rate(NUM_SET)))
 {
+
+  if (auto v = std::getenv("MPKI_REL"))  rel_thresh = std::atof(v);
+if (auto v = std::getenv("MPKI_NEED")) consec_needed = std::atoi(v);
+if (auto v = std::getenv("MPKI_STEP")) psel_step = std::atol(v);
 }
 
 unsigned& mpki_drrip::get_rrpv(long set, long way) { return rrpv.at(static_cast<std::size_t>(set * NUM_WAY + way)); }
@@ -32,11 +37,48 @@ void mpki_drrip::update_brrip(long set, long way)
 void mpki_drrip::update_srrip(long set, long way) { get_rrpv(set, way) = maxRRPV - 1; }
 
 // MPKI-change detector: runs once per EPOCH_INSTR retired instructions (per CPU)
-void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, PSEL_STEP); }
+// void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, PSEL_STEP); }
+void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, psel_step); }
 
 void mpki_drrip::check_epoch(uint32_t cpu)
 {
-  auto& p = ph[cpu];
+  // auto& p = ph[cpu];
+  // uint64_t now = champsim::retired_instr[cpu];
+  // if (now < p.last_instr) { p.last_instr = now; p.misses = 0; return; } // counter was reset
+  // uint64_t d = now - p.last_instr;
+  // if (d < EPOCH_INSTR)
+  //   return;
+
+  // double mpki = 1000.0 * static_cast<double>(p.misses) / static_cast<double>(d);
+  // p.mpki_trace.emplace_back(p.epochs + 1, mpki);
+  // if (p.avg < 0)
+  //   p.avg = mpki;
+
+  // bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, REL_THRESH * p.avg);
+  // p.consec = changed ? p.consec + 1 : 0;
+
+  // bool fired = false;
+  // if (p.cooldown > 0) {
+  //   p.cooldown--;
+  // } else if (p.consec >= CONSEC_NEEDED) {
+  //   reset_psel(cpu);
+  //   p.cooldown = COOLDOWN_EPOCHS;
+  //   p.consec = 0;
+  //   p.changes++;
+  //   fired = true;
+  // }
+
+  // if (fired)
+  //   p.avg = mpki;                          // new regime becomes the baseline
+  // else if (!changed || p.cooldown > 0)
+  //   p.avg += 0.25 * (mpki - p.avg);        // don't let a pending change drag the baseline
+
+  // p.misses = 0;
+  // p.last_instr = now;
+  // p.epochs++;
+
+
+    auto& p = ph[cpu];
   uint64_t now = champsim::retired_instr[cpu];
   if (now < p.last_instr) { p.last_instr = now; p.misses = 0; return; } // counter was reset
   uint64_t d = now - p.last_instr;
@@ -48,13 +90,13 @@ void mpki_drrip::check_epoch(uint32_t cpu)
   if (p.avg < 0)
     p.avg = mpki;
 
-  bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, REL_THRESH * p.avg);
+  bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, rel_thresh * p.avg);
   p.consec = changed ? p.consec + 1 : 0;
 
   bool fired = false;
   if (p.cooldown > 0) {
     p.cooldown--;
-  } else if (p.consec >= CONSEC_NEEDED) {
+  } else if (p.consec >= consec_needed) {
     reset_psel(cpu);
     p.cooldown = COOLDOWN_EPOCHS;
     p.consec = 0;

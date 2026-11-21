@@ -20,7 +20,9 @@ public:
     // Added for reuse_drrip
     static constexpr uint64_t EPOCH_INSTR = 250000;
     static constexpr uint64_t MIN_EVICTIONS = 256;
-    static constexpr double HI_THRESH = 0.7, LO_THRESH = 0.3, EMA_ALPHA = 0.25;
+    //static constexpr double HI_THRESH = 0.7, LO_THRESH = 0.3;
+                        static constexpr double EMA_ALPHA = 0.25;
+                        double hi_thresh = 0.7, lo_thresh = 0.3;
     static constexpr long PSEL_STEP = 0;   // 0 = hard reset
     struct phase_t {
         uint64_t last_instr = 0, evictions = 0, dead = 0, epochs = 0, forced_brrip = 0, forced_srrip = 0;
