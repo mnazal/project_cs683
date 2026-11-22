@@ -17,6 +17,9 @@ vcpkg_installed/
 
 **/_build
 **/_doxygen
+archive/
+results/1-meta/
+venv/
 
 absolute.options
 **/legacy.options

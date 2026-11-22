@@ -30,6 +30,7 @@
 #include "event_listeners.h"
 #include "instruction.h"
 #include "util/span.h"
+#include "instruction_counter.h"
 
 long O3_CPU::operate()
 {
@@ -709,6 +710,7 @@ long O3_CPU::retire_rob()
 
   auto retire_count = std::distance(retire_begin, retire_end);
   num_retired += retire_count;
+  champsim::retired_instr[cpu] = num_retired;
   ROB.erase(retire_begin, retire_end);
 
   return retire_count;

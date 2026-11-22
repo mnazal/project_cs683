@@ -1,0 +1,12 @@
+results/brrip_static_605.mcf_s-1644B.champsimtrace.xz.txt  IPC=0.1614  demand_misses=1792284
+results/brrip_static_620.omnetpp_s-874B.champsimtrace.xz.txt  IPC=0.4269  demand_misses=234379
+results/brrip_static_Trace1.gz.txt  IPC=0.3697  demand_misses=368757
+results/brrip_static_Trace2.gz.txt  IPC=0.3773  demand_misses=415199
+results/reuse_drrip_605.mcf_s-1644B.champsimtrace.xz.txt  IPC=0.1623  demand_misses=1803378
+results/reuse_drrip_620.omnetpp_s-874B.champsimtrace.xz.txt  IPC=0.4302  demand_misses=234049
+results/reuse_drrip_Trace1.gz.txt  IPC=0.3889  demand_misses=336444
+results/reuse_drrip_Trace2.gz.txt  IPC=0.4184  demand_misses=344900
+results/srrip_static_605.mcf_s-1644B.champsimtrace.xz.txt  IPC=0.1599  demand_misses=1840620
+results/srrip_static_620.omnetpp_s-874B.champsimtrace.xz.txt  IPC=0.4425  demand_misses=232115
+results/srrip_static_Trace1.gz.txt  IPC=0.3881  demand_misses=340573
+results/srrip_static_Trace2.gz.txt  IPC=0.4195  demand_misses=348470
