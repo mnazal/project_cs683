@@ -2,12 +2,12 @@
 #define REPLACEMENT_REUSE_DRRIP_H
 
 #include <array>
+#include <cstdint>
 #include <vector>
 
 #include "cache.h"
 #include "modules.h"
 #include "msl/stat_methods.h"
-#include <cstdint>
 
 struct reuse_drrip : public champsim::modules::replacement {
 private:
@@ -20,30 +20,28 @@ public:
   // Added for reuse_drrip
   static constexpr uint64_t EPOCH_INSTR = 250000;
   static constexpr uint64_t MIN_EVICTIONS = 256;
-  static constexpr double HI_THRESH = 0.9, LO_THRESH = 0.3;
+  static constexpr double HI_THRESH = 0.9;
   static constexpr double EMA_ALPHA = 0.25;
-  static constexpr long  BIAS_OFF  = 256;
-  static constexpr long PSEL_STEP = 0;   // 0 = hard reset
+  static constexpr long BIAS_OFF = 128;
   struct phase_t {
-    uint64_t last_instr = 0, evictions = 0, dead = 0, epochs = 0, forced_brrip = 0, forced_srrip = 0;
+    uint64_t last_instr = 0, evictions = 0, dead = 0, epochs = 0, forced_brrip = 0;
     double avg_r = -1.0;
-    std::vector<std::pair<uint64_t,double>> r_trace;   
-    };
-    std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
+  };
+  std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
 
   enum class set_type { follower, brrip_leader, srrip_leader };
 
   long NUM_SET, NUM_WAY;
 
-  unsigned brrip_counter=0;
+  unsigned brrip_counter = 0;
 
   std::vector<unsigned> rrpv;
   std::vector<champsim::msl::dscounter<long, PSEL_WIDTH>> PSEL;
-  
-  //Added for reuse_drrip  
+
+  // Added for reuse_drrip
   enum line_state : uint8_t { LINE_INVALID = 0, LINE_FILLED = 1, LINE_REUSED = 2 };
-  std::vector<uint8_t> state;            // one byte per cache line
-  champsim::msl::categorizer<long> cat_sampler;   // same set -> category mapping that PSEL uses
+  std::vector<uint8_t> state;                   // one byte per cache line
+  champsim::msl::categorizer<long> cat_sampler; // same set -> category mapping that PSEL uses
 
   uint8_t& get_state(long set, long way);
   bool in_measure_set(long set) const;
@@ -62,7 +60,7 @@ public:
   void replacement_final_stats();
 
   // Added for reuse_drrip
-  void bias_psel(uint32_t cpu, bool toward_brrip);
+  void bias_psel(uint32_t cpu);
   void check_epoch(uint32_t cpu);
 
   void update_brrip(long set, long way);

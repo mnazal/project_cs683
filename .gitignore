@@ -18,6 +18,7 @@ vcpkg_installed/
 **/_build
 **/_doxygen
 archive/
+results/1-meta/
 results/1-meta/Thoughts.md
 results/1-meta/scripts
 venv/
@@ -28,6 +29,10 @@ run1.sh
 summary_plot.TXT
 summary_sweep.txt
 sweep.py
+analyse_2.sh
+summarise.sh
+jobs4.txt
+new.sh
 
 absolute.options
 **/legacy.options

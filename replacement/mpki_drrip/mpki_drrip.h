@@ -2,8 +2,8 @@
 #define REPLACEMENT_MPKI_DRRIP_H
 
 #include <array>
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 #include "cache.h"
 #include "modules.h"
@@ -22,7 +22,7 @@ public:
 
   long NUM_SET, NUM_WAY;
 
-  unsigned brrip_counter=0;
+  unsigned brrip_counter = 0;
 
   std::vector<unsigned> rrpv;
   std::vector<champsim::msl::dscounter<long, PSEL_WIDTH>> PSEL;
@@ -43,25 +43,20 @@ public:
   void update_brrip(long set, long way);
   void update_srrip(long set, long way);
 
-
   struct phase_t {
-  uint64_t last_instr = 0, misses = 0, epochs = 0, changes = 0;
-  double avg = -1.0;
-  int consec = 0, cooldown = 0;
-  std::vector<std::pair<uint64_t, double>> mpki_trace;
-};
-std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
+    uint64_t last_instr = 0, misses = 0, epochs = 0, changes = 0;
+    double avg = -1.0;
+    int cooldown = 0;
+  };
+  std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
 
-static constexpr uint64_t EPOCH_INSTR     = 250000;
-static constexpr double   REL_THRESH      = 0.5;
-static constexpr double   MIN_ABS_MPKI    = 1.0;
-static constexpr int      CONSEC_NEEDED   = 1;
-static constexpr int      COOLDOWN_EPOCHS = 3;
-static constexpr long     PSEL_STEP       = 0;   // 0 = hard reset
+  static constexpr uint64_t EPOCH_INSTR = 250000;
+  static constexpr double REL_THRESH = 0.5;
+  static constexpr double MIN_ABS_MPKI = 1.0;
+  static constexpr int COOLDOWN_EPOCHS = 3;
 
-void check_epoch(uint32_t cpu);
-void reset_psel(uint32_t cpu);
+  void check_epoch(uint32_t cpu);
+  void reset_psel(uint32_t cpu);
 };
 
 #endif
-    
