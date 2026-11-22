@@ -90,8 +90,8 @@ void mpki_drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long 
     get_rrpv(set, way) = maxRRPV - 1;
     return;
   }
-
-  check_epoch(triggering_cpu); // close the previous epoch first
+  // close the epoch if 250k instructions have passed
+  check_epoch(triggering_cpu); 
   if (type == access_type::LOAD || type == access_type::RFO)
     ph[triggering_cpu].misses++; // demand misses only
 

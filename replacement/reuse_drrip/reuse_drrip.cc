@@ -2,15 +2,12 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
+#include <cstdio>
 #include <random>
 #include <utility>
 
 #include "champsim.h"
-
-// ADDED FOR REUSE DRRIP
-#include <cstdint>
-#include <cstdio>
-
 #include "instruction_counter.h"
 
 reuse_drrip::reuse_drrip(CACHE* cache)
@@ -20,17 +17,13 @@ reuse_drrip::reuse_drrip(CACHE* cache)
 {
 }
 
-// ADDED FOR REUSE DRRIP
 uint8_t& reuse_drrip::get_state(long set, long way) { return state.at(static_cast<std::size_t>(set * NUM_WAY + way)); }
 
 // category 1 = SRRIP leader sets
 bool reuse_drrip::in_measure_set(long set) const { return cat_sampler.get_sample_category(set) == 1; }
 
 // followers choose BRRIP when PSEL >= mid, so BRRIP is the high side
-void reuse_drrip::bias_psel(uint32_t cpu)
-{
-  PSEL[cpu].reset_to(PSEL[cpu].mid() + BIAS_OFF);
-}
+void reuse_drrip::bias_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() + BIAS_OFF); }
 
 void reuse_drrip::check_epoch(uint32_t cpu)
 {
@@ -110,7 +103,7 @@ void reuse_drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long
     return;
   }
 
-  // added for reuse_drrip
+  // close the epoch if 250k instructions have passed
   check_epoch(triggering_cpu);
 
   if (PSEL[triggering_cpu].decide(set)) {
