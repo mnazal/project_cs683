@@ -10,15 +10,12 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 mpki_drrip::mpki_drrip(CACHE* cache)
     : replacement(cache), NUM_SET(cache->NUM_SET), NUM_WAY(cache->NUM_WAY), rrpv(static_cast<std::size_t>(NUM_SET * NUM_WAY)),
       PSEL(NUM_CPUS, champsim::msl::dscounter<long, PSEL_WIDTH>(champsim::msl::get_sample_rate(NUM_SET)))
 {
-
-  if (auto v = std::getenv("MPKI_REL"))  rel_thresh = std::atof(v);
-if (auto v = std::getenv("MPKI_NEED")) consec_needed = std::atoi(v);
-if (auto v = std::getenv("MPKI_STEP")) psel_step = std::atol(v);
 }
 
 unsigned& mpki_drrip::get_rrpv(long set, long way) { return rrpv.at(static_cast<std::size_t>(set * NUM_WAY + way)); }
@@ -37,8 +34,7 @@ void mpki_drrip::update_brrip(long set, long way)
 void mpki_drrip::update_srrip(long set, long way) { get_rrpv(set, way) = maxRRPV - 1; }
 
 // MPKI-change detector: runs once per EPOCH_INSTR retired instructions (per CPU)
-// void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, PSEL_STEP); }
-void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, psel_step); }
+void mpki_drrip::reset_psel(uint32_t cpu) { PSEL[cpu].reset_to(PSEL[cpu].mid() - 1, PSEL_STEP); }
 
 void mpki_drrip::check_epoch(uint32_t cpu)
 {
@@ -90,13 +86,13 @@ void mpki_drrip::check_epoch(uint32_t cpu)
   if (p.avg < 0)
     p.avg = mpki;
 
-  bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, rel_thresh * p.avg);
+  bool changed = std::fabs(mpki - p.avg) > std::max(MIN_ABS_MPKI, REL_THRESH * p.avg);
   p.consec = changed ? p.consec + 1 : 0;
 
   bool fired = false;
   if (p.cooldown > 0) {
     p.cooldown--;
-  } else if (p.consec >= consec_needed) {
+  } else if (p.consec >= CONSEC_NEEDED) {
     reset_psel(cpu);
     p.cooldown = COOLDOWN_EPOCHS;
     p.consec = 0;
@@ -167,6 +163,15 @@ long mpki_drrip::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long se
 void mpki_drrip::replacement_final_stats()
 {
   for (std::size_t c = 0; c < ph.size(); ++c)
-    if (ph[c].epochs)
-      std::printf("CPU%zu MPKI phase changes: %lu / %lu epochs (final avg MPKI %.2f)\n", c, ph[c].changes, ph[c].epochs, ph[c].avg);
+    {if (ph[c].epochs)
+      {std::printf("CPU%zu MPKI phase changes: %lu / %lu epochs (final avg MPKI %.2f)\n", c, ph[c].changes, ph[c].epochs, ph[c].avg);
+
+  const char* tg = std::getenv("TRACE_TAG");
+std::string fn = std::string("results/05_traces_csv/") + (tg ? tg : "run") + ".csv";
+if (FILE* f = std::fopen(fn.c_str(), "w")) {
+  std::fprintf(f, "epoch,value\n");
+  for (auto& [e, v] : ph[c].mpki_trace) std::fprintf(f, "%lu,%.4f\n", e, v);  
+  std::fclose(f);}
+}
+}
 }

@@ -17,6 +17,17 @@ vcpkg_installed/
 
 **/_build
 **/_doxygen
+archive/
+results/1-meta/Thoughts.md
+results/1-meta/scripts
+venv/
+bias_analysis.sh
+jobs3.txt
+plot.py
+run1.sh
+summary_plot.TXT
+summary_sweep.txt
+sweep.py
 
 absolute.options
 **/legacy.options

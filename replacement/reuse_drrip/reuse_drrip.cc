@@ -11,6 +11,8 @@
 #include <cstdio>
 #include "instruction_counter.h"
 #include <cstdint>
+
+#include <string>
 #include <cstdlib>
 
 reuse_drrip::reuse_drrip(CACHE* cache)
@@ -19,8 +21,6 @@ reuse_drrip::reuse_drrip(CACHE* cache)
       state(static_cast<std::size_t>(NUM_SET * NUM_WAY), 0),
       cat_sampler(champsim::msl::get_sample_rate(NUM_SET))
 {
-    if (const char* v = std::getenv("REUSE_HI")) hi_thresh = std::atof(v);
-if (const char* v = std::getenv("REUSE_LO")) lo_thresh = std::atof(v);
 }
 
 //ADDED FOR REUSE DRRIP
@@ -32,8 +32,10 @@ bool reuse_drrip::in_measure_set(long set) const { return cat_sampler.get_sample
 // followers choose BRRIP when PSEL >= mid, so BRRIP is the high side
 void reuse_drrip::bias_psel(uint32_t cpu, bool toward_brrip)
 {
-  constexpr long OFFSET = 1L << (PSEL_WIDTH - 3);
+  //constexpr long OFFSET = 1L << (PSEL_WIDTH - 3);
+  const long OFFSET = BIAS_OFF;
   PSEL[cpu].reset_to(PSEL[cpu].mid() + (toward_brrip ? OFFSET : -OFFSET), PSEL_STEP);
+  
 }
 
 void reuse_drrip::check_epoch(uint32_t cpu)
@@ -48,12 +50,11 @@ void reuse_drrip::check_epoch(uint32_t cpu)
 
   double r = static_cast<double>(p.dead) / static_cast<double>(p.evictions);
   p.avg_r = (p.avg_r < 0) ? r : p.avg_r + EMA_ALPHA * (r - p.avg_r);
+  //Added for dumping in csv
+  p.r_trace.emplace_back(p.epochs, p.avg_r);
 
-//   if (p.avg_r > HI_THRESH)      { bias_psel(cpu, true);  p.forced_brrip++; }
-//   else if (p.avg_r < LO_THRESH) { bias_psel(cpu, false); p.forced_srrip++; }
-      if (p.avg_r > hi_thresh)      { bias_psel(cpu, true);  p.forced_brrip++; }
-  else if (p.avg_r < lo_thresh) { bias_psel(cpu, false); p.forced_srrip++; }
-
+  if (p.avg_r > HI_THRESH)      { bias_psel(cpu, true);  p.forced_brrip++; }
+  else if (p.avg_r < LO_THRESH) { bias_psel(cpu, false); p.forced_srrip++; }
   p.evictions = p.dead = 0;
 }
 
@@ -82,8 +83,6 @@ void reuse_drrip::update_replacement_state(uint32_t triggering_cpu, long set, lo
     // do not update replacement state for writebacks
     if (access_type{type} == access_type::WRITE) {
       get_rrpv(set, way) = maxRRPV - 1;
-      //experiment
-        //get_state(set, way) = LINE_REUSED;  
 
       return;
     }
@@ -113,6 +112,7 @@ void reuse_drrip::replacement_cache_fill(uint32_t triggering_cpu, long set, long
 
   //added for reuse_drrip
   check_epoch(triggering_cpu); 
+
   if (PSEL[triggering_cpu].decide(set)) {
     update_brrip(set, way);
   } else {
@@ -143,7 +143,19 @@ long reuse_drrip::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long s
 void reuse_drrip::replacement_final_stats()
 {
   for (std::size_t c = 0; c < ph.size(); ++c)
-    if (ph[c].epochs)
+    {if (ph[c].epochs)
       {std::printf("CPU%zu reuse signal: epochs=%lu forced_brrip=%lu forced_srrip=%lu final R=%.3f hi=%.2f lo=%.2f\n",
-            c, ph[c].epochs, ph[c].forced_brrip, ph[c].forced_srrip, ph[c].avg_r, hi_thresh, lo_thresh);}
+            c, ph[c].epochs, ph[c].forced_brrip, ph[c].forced_srrip, ph[c].avg_r, HI_THRESH, LO_THRESH);
+      
+            
+      //Remove this
+      const char* tg = std::getenv("TRACE_TAG");
+      std::string fn = std::string("results/05_traces_csv/") + (tg ? tg : "run") + ".csv";
+      if (FILE* f = std::fopen(fn.c_str(), "w")) {
+      std::fprintf(f, "epoch,value\n");
+      for (auto& [e, v] : ph[c].r_trace) std::fprintf(f, "%lu,%.4f\n", e, v); 
+      std::fclose(f);    
+      }
+  }
+}
 }

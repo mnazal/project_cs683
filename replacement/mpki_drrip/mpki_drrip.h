@@ -53,13 +53,11 @@ public:
 std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
 
 static constexpr uint64_t EPOCH_INSTR     = 250000;
-//static constexpr double   REL_THRESH      = 0.25;
+static constexpr double   REL_THRESH      = 0.5;
 static constexpr double   MIN_ABS_MPKI    = 1.0;
-//static constexpr int      CONSEC_NEEDED   = 1;
+static constexpr int      CONSEC_NEEDED   = 1;
 static constexpr int      COOLDOWN_EPOCHS = 3;
-//static constexpr long     PSEL_STEP       = 0;   // 0 = hard reset
-
-double rel_thresh = 0.25; int consec_needed = 1; long psel_step = 0;
+static constexpr long     PSEL_STEP       = 0;   // 0 = hard reset
 
 void check_epoch(uint32_t cpu);
 void reset_psel(uint32_t cpu);

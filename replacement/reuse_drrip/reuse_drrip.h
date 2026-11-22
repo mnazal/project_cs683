@@ -17,16 +17,17 @@ public:
   static constexpr unsigned maxRRPV = 3;
   static constexpr unsigned BRRIP_MAX = 32;
   static constexpr unsigned PSEL_WIDTH = 10;
-    // Added for reuse_drrip
-    static constexpr uint64_t EPOCH_INSTR = 250000;
-    static constexpr uint64_t MIN_EVICTIONS = 256;
-    //static constexpr double HI_THRESH = 0.7, LO_THRESH = 0.3;
-                        static constexpr double EMA_ALPHA = 0.25;
-                        double hi_thresh = 0.7, lo_thresh = 0.3;
-    static constexpr long PSEL_STEP = 0;   // 0 = hard reset
-    struct phase_t {
-        uint64_t last_instr = 0, evictions = 0, dead = 0, epochs = 0, forced_brrip = 0, forced_srrip = 0;
-        double avg_r = -1.0;
+  // Added for reuse_drrip
+  static constexpr uint64_t EPOCH_INSTR = 250000;
+  static constexpr uint64_t MIN_EVICTIONS = 256;
+  static constexpr double HI_THRESH = 0.9, LO_THRESH = 0.3;
+  static constexpr double EMA_ALPHA = 0.25;
+  static constexpr long  BIAS_OFF  = 256;
+  static constexpr long PSEL_STEP = 0;   // 0 = hard reset
+  struct phase_t {
+    uint64_t last_instr = 0, evictions = 0, dead = 0, epochs = 0, forced_brrip = 0, forced_srrip = 0;
+    double avg_r = -1.0;
+    std::vector<std::pair<uint64_t,double>> r_trace;   
     };
     std::vector<phase_t> ph = std::vector<phase_t>(NUM_CPUS);
 
@@ -38,6 +39,7 @@ public:
 
   std::vector<unsigned> rrpv;
   std::vector<champsim::msl::dscounter<long, PSEL_WIDTH>> PSEL;
+  
   //Added for reuse_drrip  
   enum line_state : uint8_t { LINE_INVALID = 0, LINE_FILLED = 1, LINE_REUSED = 2 };
   std::vector<uint8_t> state;            // one byte per cache line
