@@ -68,6 +68,9 @@ To set the replacement policy in your configuration file, update the `"replaceme
 **reuse_drrip**: 1 reused bit per LLC line (4 KB) plus about 54 bits.
 Neither touches the critical path.
 
+## Traces used
+https://drive.google.com/drive/folders/10cJoTfv8WRjTOkBvxiickZO9SDUmJLS7?usp=sharing
+
 
 
 ## Acknowledgements
